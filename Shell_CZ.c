@@ -4,10 +4,36 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+
+#define clear() printf("\033[H\033[J")
+#define ANSI_COLOR_RED     "\x1b[31m"
+#define ANSI_COLOR_GREEN   "\x1b[32m"
+#define ANSI_COLOR_YELLOW  "\x1b[33m"
+#define ANSI_COLOR_BLUE    "\x1b[34m"
+#define ANSI_COLOR_MAGENTA "\x1b[35m"
+#define ANSI_COLOR_CYAN    "\x1b[36m"
+#define ANSI_COLOR_RESET   "\x1b[0m"
 
 int lsh_cd(char **args);
 int lsh_ajuda(char **args);
 int lsh_sair(char **args);
+void init();
+
+void init(){
+  clear();
+    printf("\n\n\t          -BEM VINDO-");
+    printf("\n\n\n*******************"
+        "***********************\n\n");
+  printf("            ▐▓█▀▀▀▀▀▀▀▀▀█▓▌░▄▄▄▄▄░\n");
+  printf("            ▐▓█░░▀░░▀▄░░█▓▌░█▄▄▄█░\n");
+  printf("            ▐▓█░░▄░░▄▀░░█▓▌░█▄▄▄█░\n");
+  printf("            ▐▓█▄▄▄▄▄▄▄▄▄█▓▌░█████░\n");
+  printf("            ░░░░▄▄███▄▄░░░░░█████░\n");
+  printf("\n\n User: %s ""\n ",getenv("USER"));
+  sleep(1);
+}
 
 char *builtin_str[] = {
   "cd",
@@ -176,6 +202,12 @@ char **lsh_split_line(char *line)
   return tokens;
 }
 
+void print_dir(void){
+  char cwd [1024];
+  getcwd(cwd,sizeof(cwd));
+  printf(ANSI_COLOR_CYAN"\n ㄲ%s:" ANSI_COLOR_GREEN " %s"ANSI_COLOR_RESET,getenv("USER"), cwd);
+}
+
 void lsh_loop(void)
 {
   char *line;
@@ -183,7 +215,8 @@ void lsh_loop(void)
   int status;
 
   do {
-    printf("$ ");
+    print_dir();
+    printf("ㅎ ");
     line = lsh_read_line();
     args = lsh_split_line(line);
     status = lsh_execute(args);
@@ -195,8 +228,9 @@ void lsh_loop(void)
 
 int main(int argc, char **argv)
 {
-
+  init();
   lsh_loop();
 
   return EXIT_SUCCESS;
 }
+
