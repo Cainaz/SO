@@ -1,5 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
+
+
+void leitura(FILE *arq, int n){
+	printf("%d", arq);
+	for(int i=0; i < n; i++){
+		int result = fgetc(arq);
+		printf("olaaaaa: %x ", result);
+	}
+	printf("oiiiii \n");
+}
+
 void main()
 {
 FILE *arq = NULL;
@@ -7,8 +18,9 @@ char Linha[100];
 int result;
 int i,w,l=0;
 
-arq = fopen("mbr.bin","rb");
 
+arq = fopen("mbr.bin","rb");
+printf("%d", arq);
 if(arq == NULL)
 {
 printf("Problemas de leitura\n");
@@ -28,17 +40,20 @@ if(i == 2){
 	printf(" ");
 	i=0;
 }
-if(w >=419 ){
+if(w >=416 ){
 	printf("%x", result);
-	Linha[l] = result;
+	break;
+	Linha[l] = (char) result;
 	l++;
+	
 }
 w++;
 i++;
 }
 
 }
+leitura(arq,3);
 printf("w: %d",w);
-printf("linha: %x",Linha);
+//printf("linha: %s",Linha);
 fclose(arq);
 }
